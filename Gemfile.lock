@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    prosemirror_to_html (0.2.0)
+    prosemirror_to_html (0.2.1)
       nokogiri
 
 GEM
