@@ -33,11 +33,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 2.1.4)
+  bundler (~> 2.3)
   prosemirror_to_html!
   rake (~> 13.0)
   rspec (~> 3.0)
   yard
 
 BUNDLED WITH
-   2.1.4
+   2.7.2

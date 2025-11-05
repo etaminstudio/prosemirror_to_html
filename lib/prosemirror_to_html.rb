@@ -246,7 +246,8 @@ module ProsemirrorToHtml
           attrs = ''
           if tag&.attrs
             tag.attrs.each_pair do |attr, value|
-              attrs << " #{attr}=\"#{value}\""
+              escaped_value = CGI.escapeHTML(value.to_s)
+              attrs << " #{attr}=\"#{escaped_value}\""
             end
           end
 

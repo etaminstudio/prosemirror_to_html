@@ -65,7 +65,7 @@ RSpec.describe ProsemirrorToHtml do
     }
 
     renderer = ProsemirrorToHtml::Renderer.new
-    expect(html).to eq renderer.render(json)
+    expect(renderer.render(json)).to eq(html)
   end
 
   it 'renders example json correctly' do
@@ -177,6 +177,36 @@ RSpec.describe ProsemirrorToHtml do
     html = '<h2>Export HTML or JSON</h2><p>You are able to export your data as <code>HTML</code> or <code>JSON</code>. To pass <code>HTML</code> to the editor use the <code>content</code> slot. To pass <code>JSON</code> to the editor use the <code>doc</code> prop.</p>'
 
     renderer = ProsemirrorToHtml::Renderer.new
-    expect(renderer.render(json)).to eq html
+    expect(renderer.render(json)).to eq(html)
+  end
+
+  it 'escapes HTML attributes' do
+    escaped_html = "<p><a href=\"javascript:alert(&#39;Hello!&#39;)\">Test</a></p>"
+
+    json = {
+      "type": "doc",
+      "content": [
+        {
+          "type": "paragraph",
+          "content": [
+            {
+              "type": "text",
+              "text": "Test",
+              "marks": [
+                {
+                  "type": "link",
+                  "attrs": {
+                    "href": "javascript:alert('Hello!')"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+
+    renderer = ProsemirrorToHtml::Renderer.new
+    expect(renderer.render(json)).to eq(escaped_html)
   end
 end
