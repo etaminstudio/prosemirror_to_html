@@ -13,7 +13,7 @@ module ProsemirrorToHtml
       end
 
       def matching
-        return underscore(@node.type) == self.class.node_type if @node.type
+        return underscore(@node[:type]) == self.class.node_type if @node[:type]
 
         false
       end

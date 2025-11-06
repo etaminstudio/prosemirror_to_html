@@ -8,7 +8,7 @@ module ProsemirrorToHtml
         [
           {
             tag: self.class.tag_name,
-            attrs: @node.attrs
+            attrs: @node[:attrs]
           }
         ]
       end

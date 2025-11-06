@@ -25,7 +25,6 @@ require "prosemirror_to_html/nodes/table_header"
 require "prosemirror_to_html/nodes/table_row"
 require 'nokogiri'
 require 'json'
-require "ostruct"
 
 module ProsemirrorToHtml
   class Error < StandardError; end
@@ -82,11 +81,11 @@ module ProsemirrorToHtml
              else raise Error
              end
 
-      @document = JSON.parse(json, object_class: OpenStruct)
+      @document = JSON.parse(json, symbolize_names: true)
 
       html = ''
 
-      content = @document.content.is_a?(Array) ? @document.content : []
+      content = @document[:content].is_a?(Array) ? @document[:content] : []
 
       content.each_with_index do |node, index|
         prev_node = content[index - 1]
@@ -148,14 +147,12 @@ module ProsemirrorToHtml
       html = ''
       render_klass = nil
 
-      if node&.marks
-        node.marks.each do |mark|
-          @marks.each do |klass|
-            render_klass = klass.new(mark)
+      node[:marks]&.each do |mark|
+        @marks.each do |klass|
+          render_klass = klass.new(mark)
 
-            if render_klass.matching && mark_should_open(mark, prev_node)
-              html << render_opening_tag(render_klass.tag)
-            end
+          if render_klass.matching && mark_should_open(mark, prev_node)
+            html << render_opening_tag(render_klass.tag)
           end
         end
       end
@@ -169,17 +166,17 @@ module ProsemirrorToHtml
         end
       end
 
-      if node&.content
-        node.content.each_with_index do |nested_node, index|
-          prev_nested_node = node.content[index - 1]
-          next_nested_node = node.content[index + 1]
+      if node[:content]
+        node[:content].each_with_index do |nested_node, index|
+          prev_nested_node = node[:content][index - 1]
+          next_nested_node = node[:content][index + 1]
 
           html << render_node(nested_node, prev_nested_node, next_nested_node)
           prev_node = nested_node
         end
-      elsif node&.text
-        html << CGI.escapeHTML(node.text)
-      elsif text = render_klass.text
+      elsif node[:text]
+        html << CGI.escapeHTML(node[:text])
+      elsif (text = render_klass.text)
         html << text
       end
 
@@ -195,14 +192,12 @@ module ProsemirrorToHtml
         end
       end
 
-      if node&.marks
-        node.marks.reverse.each do |mark|
-          @marks.each do |klass|
-            render_klass = klass.new(mark)
+      node[:marks]&.reverse&.each do |mark|
+        @marks.each do |klass|
+          render_klass = klass.new(mark)
 
-            if render_klass.matching && mark_should_close(mark, next_node)
-              html << render_closing_tag(render_klass.tag)
-            end
+          if render_klass.matching && mark_should_close(mark, next_node)
+            html << render_closing_tag(render_klass.tag)
           end
         end
       end
@@ -241,17 +236,13 @@ module ProsemirrorToHtml
         if tag.is_a? String
           "<#{tag}>"
         else
-          tag = OpenStruct.new(tag) unless tag.is_a?(OpenStruct)
-
           attrs = ''
-          if tag&.attrs
-            tag.attrs.each_pair do |attr, value|
-              escaped_value = CGI.escapeHTML(value.to_s)
-              attrs << " #{attr}=\"#{escaped_value}\""
-            end
+          tag[:attrs]&.each_pair do |attr, value|
+            escaped_value = CGI.escapeHTML(value.to_s)
+            attrs << " #{attr}=\"#{escaped_value}\""
           end
 
-          "<#{tag.tag}#{attrs}>"
+          "<#{tag[:tag]}#{attrs}>"
         end
       end.join
     end
@@ -265,9 +256,7 @@ module ProsemirrorToHtml
         if tag.is_a? String
           "</#{tag}>"
         else
-          tag = OpenStruct.new(tag) unless tag.is_a?(OpenStruct)
-
-          "</#{tag.tag}>"
+          "</#{tag[:tag]}>"
         end
       end.join
     end

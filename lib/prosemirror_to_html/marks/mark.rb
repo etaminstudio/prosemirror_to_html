@@ -13,7 +13,7 @@ module ProsemirrorToHtml
       end
 
       def matching
-        return @mark.type == self.class.mark_type if @mark.type
+        return @mark[:type] == self.class.mark_type if @mark[:type]
 
         false
       end
