@@ -2,12 +2,17 @@ PATH
   remote: .
   specs:
     prosemirror_to_html (0.3.1)
+      loofah
       nokogiri
 
 GEM
   remote: https://rubygems.org/
   specs:
+    crass (1.0.7)
     diff-lcs (1.6.2)
+    loofah (2.25.2)
+      crass (~> 1.0.2)
+      nokogiri (>= 1.12.0)
     mini_portile2 (2.8.9)
     nokogiri (1.19.4)
       mini_portile2 (~> 2.8.2)
