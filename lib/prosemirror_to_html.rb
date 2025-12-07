@@ -26,6 +26,8 @@ require "prosemirror_to_html/nodes/table_row"
 require 'nokogiri'
 require 'json'
 require "ostruct"
+require "loofah"
+require "loofah/helpers"
 
 module ProsemirrorToHtml
   class Error < StandardError; end
@@ -95,7 +97,7 @@ module ProsemirrorToHtml
         html << render_node(node, prev_node, next_node)
       end
 
-      html
+      Loofah::Helpers.sanitize(html)
     end
 
     def add_node(node)
