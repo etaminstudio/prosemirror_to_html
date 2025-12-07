@@ -33,7 +33,7 @@ GEM
     yard (0.9.36)
 
 PLATFORMS
-  x86_64-linux
+  ruby
 
 DEPENDENCIES
   bundler (~> 2.3)
