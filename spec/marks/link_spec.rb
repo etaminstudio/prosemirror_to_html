@@ -142,6 +142,47 @@ RSpec.describe ProsemirrorToHtml::Marks::Link do
     expect(renderer.render(json)).to eq html
   end
 
+  it 'renders correctly with mixed italic and non-italic text inside a link' do
+    link_mark = {
+      type: 'link',
+      attrs: {
+        href: 'https://etamin.studio'
+      }
+    }
+
+    json = {
+      type: 'doc',
+      content: [{
+        type: 'paragraph',
+        content: [{
+          type: 'text',
+          text: 'Foo',
+          marks: [link_mark, { type: 'italic' }]
+        }, {
+          type: 'text',
+          text: ' and ',
+          marks: [link_mark]
+        }, {
+          type: 'text',
+          text: 'Bar',
+          marks: [link_mark, { type: 'italic' }]
+        }, {
+          type: 'text',
+          text: ' ',
+          marks: [link_mark]
+        }, {
+          type: 'text',
+          text: 'baz'
+        }]
+      }]
+    }
+
+    html = '<p><a href="https://etamin.studio"><em>Foo</em> and <em>Bar</em> </a>baz</p>'
+
+    renderer = ProsemirrorToHtml::Renderer.new
+    expect(renderer.render(json)).to eq html
+  end
+
   it 'renders correctly with nested marks, inside nodes' do
     json = {
       type: 'doc',

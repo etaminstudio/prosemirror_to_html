@@ -88,7 +88,7 @@ module ProsemirrorToHtml
       content = @document[:content].is_a?(Array) ? @document[:content] : []
 
       content.each_with_index do |node, index|
-        prev_node = content[index - 1]
+        prev_node = index > 0 ? content[index - 1] : nil
         next_node = content[index + 1]
 
         html << render_node(node, prev_node, next_node)
@@ -168,11 +168,10 @@ module ProsemirrorToHtml
 
       if node[:content]
         node[:content].each_with_index do |nested_node, index|
-          prev_nested_node = node[:content][index - 1]
+          prev_nested_node = index > 0 ? node[:content][index - 1] : nil
           next_nested_node = node[:content][index + 1]
 
           html << render_node(nested_node, prev_nested_node, next_nested_node)
-          prev_node = nested_node
         end
       elsif node[:text]
         html << CGI.escapeHTML(node[:text])
@@ -215,14 +214,9 @@ module ProsemirrorToHtml
 
     def node_has_mark(node, mark)
       return true unless node
-      return true if node.respond_to?(:marks)
 
-      # Other node has same mark
-      node.marks&.each do |other_mark|
-        if mark == other_mark
-          return false
-        end
-      end
+      # Don't open/close if the adjacent node shares the same mark
+      return false if node[:marks]&.map(&:to_json)&.include?(mark.to_json)
 
       true
     end
@@ -249,6 +243,7 @@ module ProsemirrorToHtml
 
     def render_closing_tag(tags)
       tags = array_wrap(tags).reverse
+      p ["render_closing_tag", tags]
 
       return nil if tags.empty?
 
