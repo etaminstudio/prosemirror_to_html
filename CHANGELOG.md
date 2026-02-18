@@ -1,3 +1,7 @@
+## [0.2.1] - 2025-11-05
+
+- Escape attributes values [CVE-2025-64501]
+
 ## [0.2.0] - 2023-07-03
 
 Hans Lemuet (@Spone) is the new maintainer. The fork is now hosted at https://github.com/etaminstudio/prosemirror_to_html
