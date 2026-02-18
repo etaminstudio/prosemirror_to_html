@@ -1,3 +1,13 @@
+## [0.3.0] - 2026-02-18
+
+### Changed
+
+- Remove dependency to `OpenStruct`
+
+### Fixed
+
+- Fix mark grouping: marks shared across adjacent text nodes (e.g. a `link` spanning multiple runs) are now correctly rendered as a single wrapping tag instead of being reopened for each node
+
 ## [0.2.1] - 2025-11-05
 
 - Escape attributes values [CVE-2025-64501]
