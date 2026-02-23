@@ -243,7 +243,6 @@ module ProsemirrorToHtml
 
     def render_closing_tag(tags)
       tags = array_wrap(tags).reverse
-      p ["render_closing_tag", tags]
 
       return nil if tags.empty?
 
