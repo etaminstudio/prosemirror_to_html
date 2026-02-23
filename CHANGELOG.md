@@ -1,3 +1,9 @@
+## [0.3.1] - 2026-02-23
+
+### Fixed
+
+- Remove unwanted debug output
+
 ## [0.3.0] - 2026-02-18
 
 ### Changed
