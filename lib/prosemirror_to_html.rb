@@ -25,6 +25,7 @@ require "prosemirror_to_html/nodes/table_header"
 require "prosemirror_to_html/nodes/table_row"
 require 'nokogiri'
 require 'json'
+require "loofah"
 
 module ProsemirrorToHtml
   class Error < StandardError; end
@@ -94,7 +95,7 @@ module ProsemirrorToHtml
         html << render_node(node, prev_node, next_node)
       end
 
-      html
+      sanitize(html)
     end
 
     def add_node(node)
@@ -142,6 +143,23 @@ module ProsemirrorToHtml
     end
 
     private
+
+    # Serialize without libxml2's block-element auto-indentation (no FORMAT
+    # flag), so sanitizing does not reformat the renderer's compact output.
+    SANITIZE_SAVE_OPTIONS = Nokogiri::XML::Node::SaveOptions::AS_HTML |
+                            Nokogiri::XML::Node::SaveOptions::NO_DECLARATION |
+                            Nokogiri::XML::Node::SaveOptions::NO_EMPTY_TAGS
+
+    # Scrub the rendered HTML against Loofah's allowlist, stripping unsafe
+    # elements and attributes (event handlers, javascript: URLs, unknown tags)
+    # while keeping their text content. Mirrors Loofah::Helpers.sanitize but
+    # serializes compactly (see SANITIZE_SAVE_OPTIONS).
+    def sanitize(html)
+      fragment = Loofah.fragment(html)
+      fragment.scrub!(:strip)
+      fragment.xpath("./form").each(&:remove)
+      fragment.to_html(save_with: SANITIZE_SAVE_OPTIONS)
+    end
 
     def render_node(node, prev_node, next_node)
       html = ''

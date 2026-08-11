@@ -42,5 +42,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "yard"
   spec.add_dependency "nokogiri"
+  spec.add_dependency "loofah"
 
 end

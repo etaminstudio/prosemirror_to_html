@@ -180,8 +180,8 @@ RSpec.describe ProsemirrorToHtml do
     expect(renderer.render(json)).to eq(html)
   end
 
-  it 'escapes HTML attributes' do
-    escaped_html = "<p><a href=\"javascript:alert(&#39;Hello!&#39;)\">Test</a></p>"
+  it 'prevents javascript links' do
+    escaped_html = '<p><a>Test</a></p>'
 
     json = {
       "type": "doc",
