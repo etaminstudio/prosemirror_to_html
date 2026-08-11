@@ -1,3 +1,9 @@
+## [Unreleased]
+
+### Fixed
+
+- Clamp the heading `level` to a valid range (1-6) so a document-supplied value cannot steer the tag name (e.g. injecting a `<script>` element)
+
 ## [0.3.1] - 2026-02-23
 
 ### Fixed
