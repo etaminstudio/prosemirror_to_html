@@ -9,10 +9,11 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Hans Lemuet", "Brian Kimball"]
   spec.email         = ["hans@etamin.studio", "bvkimball@gmail.com"]
 
-  spec.summary       = %q{Takes ProseMirror compatible JSON and outputs HTML.}
-  spec.description   = %q{Takes ProseMirror compatible JSON and outputs HTML.}
+  spec.summary       = %q{Deprecated: use the prosemirror gem. Takes ProseMirror compatible JSON and outputs HTML.}
+  spec.description   = %q{Deprecated in favor of the prosemirror gem. Takes ProseMirror compatible JSON and outputs HTML.}
   spec.homepage      = "https://github.com/etaminstudio/prosemirror_to_html"
   spec.license       = "MIT"
+  spec.post_install_message = "prosemirror_to_html is deprecated: use the prosemirror gem instead. Migration guide: https://github.com/etaminstudio/prosemirror/blob/main/MIGRATING.md"
 
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
