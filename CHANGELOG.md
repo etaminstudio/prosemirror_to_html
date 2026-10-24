@@ -1,3 +1,9 @@
+## [0.4.1] - 2026-10-24
+
+### Deprecated
+
+- This gem is deprecated in favor of [prosemirror](https://github.com/etaminstudio/prosemirror), from the same maintainers: see the [migration guide](https://github.com/etaminstudio/prosemirror/blob/main/MIGRATING.md). Installing it shows a message pointing there.
+
 ## [0.4.0] - 2026-08-12
 
 ### Security
